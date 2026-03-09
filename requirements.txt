@@ -1,0 +1,8 @@
+pyside6
+fastapi
+uvicorn
+requests
+sqlite3
+pillow
+python-multipart
+loguru
