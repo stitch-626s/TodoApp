@@ -1,6 +1,8 @@
 # PySide6 客户端主程序
 import os
+import subprocess
 import sys
+import time
 from datetime import datetime
 from typing import Dict, Optional, Any
 from PySide6.QtWidgets import (
@@ -466,6 +468,38 @@ class TodoApp(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    #启动客户端程序时，拉起服务端
+    server_process = None
+
+    if getattr(sys, "frozen", False):
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    server_exe_path = os.path.join(base_dir, "TodoServer.exe")
+
+    if os.path.exists(server_exe_path):
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+        server_process = subprocess.Popen([server_exe_path], startupinfo=startupinfo)
+        
+        time.sleep(1)
+    else:
+        print("未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动。")
+        logger.exception("Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动")
+
+    def cleanup() -> None:
+        """
+        退出事件：当 GUI 客户端关闭时，连带把后台的服务端也杀掉
+        """
+        
+        if server_process:
+            server_process.terminate()
+
+    app.aboutToQuit.connect(cleanup)
+
     window = TodoApp()
     window.show()
     sys.exit(app.exec())
