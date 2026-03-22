@@ -1,0 +1,249 @@
+2026-02-25T19:05:26.981963+0800 - ERROR - Fetch error: HTTPConnectionPool(host='127.0.0.1', port=10810): Read timed out. (read timeout=3)
+Traceback (most recent call last):
+
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+               │    └ <function HTTPConnection.getresponse at 0x0000018B8AA23420>
+               └ <urllib3.connection.HTTPConnection object at 0x0000018B8AC6A7B0>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "D:\anaconda3\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    │        └ <function HTTPResponse.begin at 0x0000018B8A8BEA20>
+    └ <http.client.HTTPResponse object at 0x0000018B8AA3F1F0>
+  File "D:\anaconda3\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              │    └ <function HTTPResponse._read_status at 0x0000018B8A8BE980>
+                              └ <http.client.HTTPResponse object at 0x0000018B8AA3F1F0>
+  File "D:\anaconda3\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               │    │           └ 65536
+               │    └ None
+               └ <http.client.HTTPResponse object at 0x0000018B8AA3F1F0>
+  File "D:\anaconda3\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           │    │               └ <memory at 0x0000018B8AB7AE00>
+           │    └ None
+           └ <socket.SocketIO object at 0x0000018B8A77FA30>
+
+TimeoutError: timed out
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "D:\anaconda3\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+           │    └ <function HTTPConnectionPool.urlopen at 0x0000018B8AA339C0>
+           └ <urllib3.connectionpool.HTTPConnectionPool object at 0x0000018B8AC6A3C0>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              │       └ <function Retry.increment at 0x0000018B8A8FDE40>
+              └ Retry(total=0, connect=None, read=False, redirect=None, status=None)
+  File "D:\anaconda3\Lib\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          │            │       │      └ <traceback object at 0x0000018B8AD01380>
+          │            │       └ ReadTimeoutError("HTTPConnectionPool(host='127.0.0.1', port=10810): Read timed out. (read timeout=3)")
+          │            └ ReadTimeoutError("HTTPConnectionPool(host='127.0.0.1', port=10810): Read timed out. (read timeout=3)")
+          └ <function reraise at 0x0000018B8A8C7A60>
+  File "D:\anaconda3\Lib\site-packages\urllib3\util\util.py", line 39, in reraise
+    raise value
+          └ None
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               │    └ <function HTTPConnectionPool._make_request at 0x0000018B8AA337E0>
+               └ <urllib3.connectionpool.HTTPConnectionPool object at 0x0000018B8AC6A3C0>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+    │    │                         │                  └ 3
+    │    │                         └ 'http://127.0.0.1:8000/todos'
+    │    └ <function HTTPConnectionPool._raise_timeout at 0x0000018B8AA33740>
+    └ <urllib3.connectionpool.HTTPConnectionPool object at 0x0000018B8AC6A3C0>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+          └ <class 'urllib3.exceptions.ReadTimeoutError'>
+
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=10810): Read timed out. (read timeout=3)
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "D:\VsCode\PythonProjects\TodoApp\frontend\app.py", line 395, in <module>
+    window = TodoApp()
+             └ <class '__main__.TodoApp'>
+
+  File "D:\VsCode\PythonProjects\TodoApp\frontend\app.py", line 207, in __init__
+    self.refresh_todos()
+    │    └ <function TodoApp.refresh_todos at 0x0000018B8ACEAFC0>
+    └ <__main__.TodoApp(0x18b86027ac0, name="MainWindow") at 0x0000018B8ACF1100>
+
+> File "D:\VsCode\PythonProjects\TodoApp\frontend\app.py", line 370, in refresh_todos
+    response = requests.get(f"{API_URL}/todos", timeout=3)
+               │        │      └ 'http://127.0.0.1:8000'
+               │        └ <function get at 0x0000018B8AC99760>
+               └ <module 'requests' from 'D:\\anaconda3\\Lib\\site-packages\\requests\\__init__.py'>
+
+  File "D:\anaconda3\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           │              │           │         └ {'timeout': 3}
+           │              │           └ None
+           │              └ 'http://127.0.0.1:8000/todos'
+           └ <function request at 0x0000018B8AC99620>
+  File "D:\anaconda3\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           │       │              │           │      └ {'params': None, 'timeout': 3}
+           │       │              │           └ 'http://127.0.0.1:8000/todos'
+           │       │              └ 'get'
+           │       └ <function Session.request at 0x0000018B8ACE9800>
+           └ <requests.sessions.Session object at 0x0000018B8AC697F0>
+  File "D:\anaconda3\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           │    │    │       └ {'timeout': 3, 'allow_redirects': True, 'proxies': OrderedDict({'http': 'http://127.0.0.1:10810', 'https': 'http://127.0.0.1:...
+           │    │    └ <PreparedRequest [GET]>
+           │    └ <function Session.send at 0x0000018B8ACE9D00>
+           └ <requests.sessions.Session object at 0x0000018B8AC697F0>
+  File "D:\anaconda3\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        │       │    │          └ {'timeout': 3, 'proxies': OrderedDict({'http': 'http://127.0.0.1:10810', 'https': 'http://127.0.0.1:10810', 'ftp': 'http://12...
+        │       │    └ <PreparedRequest [GET]>
+        │       └ <function HTTPAdapter.send at 0x0000018B8ACE9080>
+        └ <requests.adapters.HTTPAdapter object at 0x0000018B8ABC6D50>
+  File "D:\anaconda3\Lib\site-packages\requests\adapters.py", line 690, in send
+    raise ReadTimeout(e, request=request)
+          │                      └ <PreparedRequest [GET]>
+          └ <class 'requests.exceptions.ReadTimeout'>
+
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=10810): Read timed out. (read timeout=3)
+2026-02-25T19:12:41.514341+0800 - ERROR - Fetch error: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=3)
+Traceback (most recent call last):
+
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+               │    └ <function HTTPConnection.getresponse at 0x0000029F78BC3420>
+               └ <urllib3.connection.HTTPConnection object at 0x0000029F78DFA660>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "D:\anaconda3\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    │        └ <function HTTPResponse.begin at 0x0000029F78AAEA20>
+    └ <http.client.HTTPResponse object at 0x0000029F77ED5150>
+  File "D:\anaconda3\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              │    └ <function HTTPResponse._read_status at 0x0000029F78AAE980>
+                              └ <http.client.HTTPResponse object at 0x0000029F77ED5150>
+  File "D:\anaconda3\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               │    │           └ 65536
+               │    └ None
+               └ <http.client.HTTPResponse object at 0x0000029F77ED5150>
+  File "D:\anaconda3\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           │    │               └ <memory at 0x0000029F78D06EC0>
+           │    └ None
+           └ <socket.SocketIO object at 0x0000029F78B45630>
+
+TimeoutError: timed out
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "D:\anaconda3\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+           │    └ <function HTTPConnectionPool.urlopen at 0x0000029F78BD39C0>
+           └ <urllib3.connectionpool.HTTPConnectionPool object at 0x0000029F78DFA270>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              │       └ <function Retry.increment at 0x0000029F78AEDE40>
+              └ Retry(total=0, connect=None, read=False, redirect=None, status=None)
+  File "D:\anaconda3\Lib\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          │            │       │      └ <traceback object at 0x0000029F78B2ACC0>
+          │            │       └ ReadTimeoutError("HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=3)")
+          │            └ ReadTimeoutError("HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=3)")
+          └ <function reraise at 0x0000029F78AB7A60>
+  File "D:\anaconda3\Lib\site-packages\urllib3\util\util.py", line 39, in reraise
+    raise value
+          └ None
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               │    └ <function HTTPConnectionPool._make_request at 0x0000029F78BD37E0>
+               └ <urllib3.connectionpool.HTTPConnectionPool object at 0x0000029F78DFA270>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+    │    │                         │                  └ 3
+    │    │                         └ '/todos'
+    │    └ <function HTTPConnectionPool._raise_timeout at 0x0000029F78BD3740>
+    └ <urllib3.connectionpool.HTTPConnectionPool object at 0x0000029F78DFA270>
+  File "D:\anaconda3\Lib\site-packages\urllib3\connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+          └ <class 'urllib3.exceptions.ReadTimeoutError'>
+
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=3)
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "D:\VsCode\PythonProjects\TodoApp\frontend\app.py", line 396, in <module>
+    window = TodoApp()
+             └ <class '__main__.TodoApp'>
+
+  File "D:\VsCode\PythonProjects\TodoApp\frontend\app.py", line 208, in __init__
+    self.refresh_todos()
+    │    └ <function TodoApp.refresh_todos at 0x0000029F78E6AFC0>
+    └ <__main__.TodoApp(0x29f74266030, name="MainWindow") at 0x0000029F78E75080>
+
+> File "D:\VsCode\PythonProjects\TodoApp\frontend\app.py", line 371, in refresh_todos
+    response = requests.get(f"{API_URL}/todos", timeout=3, proxies=NO_PROXY)
+               │        │      │                                   └ {'http': '', 'https': '', 'ftp': 'http://127.0.0.1:10810'}
+               │        │      └ 'http://127.0.0.1:8000'
+               │        └ <function get at 0x0000029F78E1D760>
+               └ <module 'requests' from 'D:\\anaconda3\\Lib\\site-packages\\requests\\__init__.py'>
+
+  File "D:\anaconda3\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           │              │           │         └ {'timeout': 3, 'proxies': {'http': '', 'https': '', 'ftp': 'http://127.0.0.1:10810'}}
+           │              │           └ None
+           │              └ 'http://127.0.0.1:8000/todos'
+           └ <function request at 0x0000029F78E1D620>
+  File "D:\anaconda3\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           │       │              │           │      └ {'params': None, 'timeout': 3, 'proxies': {'http': '', 'https': '', 'ftp': 'http://127.0.0.1:10810'}}
+           │       │              │           └ 'http://127.0.0.1:8000/todos'
+           │       │              └ 'get'
+           │       └ <function Session.request at 0x0000029F78E69800>
+           └ <requests.sessions.Session object at 0x0000029F78DF97F0>
+  File "D:\anaconda3\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           │    │    │       └ {'timeout': 3, 'allow_redirects': True, 'proxies': OrderedDict({'http': '', 'https': '', 'ftp': 'http://127.0.0.1:10810'}), '...
+           │    │    └ <PreparedRequest [GET]>
+           │    └ <function Session.send at 0x0000029F78E69D00>
+           └ <requests.sessions.Session object at 0x0000029F78DF97F0>
+  File "D:\anaconda3\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        │       │    │          └ {'timeout': 3, 'proxies': OrderedDict({'http': '', 'https': '', 'ftp': 'http://127.0.0.1:10810'}), 'stream': False, 'verify':...
+        │       │    └ <PreparedRequest [GET]>
+        │       └ <function HTTPAdapter.send at 0x0000029F78E69080>
+        └ <requests.adapters.HTTPAdapter object at 0x0000029F78D56D50>
+  File "D:\anaconda3\Lib\site-packages\requests\adapters.py", line 690, in send
+    raise ReadTimeout(e, request=request)
+          │                      └ <PreparedRequest [GET]>
+          └ <class 'requests.exceptions.ReadTimeout'>
+
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=3)
+2026-03-22T13:00:09.137644+0800 - ERROR - Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动
+NoneType: None
+2026-03-22T13:08:22.463051+0800 - ERROR - Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动
+NoneType: None
+2026-03-22T13:36:57.286854+0800 - ERROR - Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动
+2026-03-22T14:06:59.190069+0800 - ERROR - Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动

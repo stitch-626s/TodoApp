@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QFileDialog, QFrame, QGraphicsDropShadowEffect
 )
 from PySide6.QtCore import Qt, QPoint, Signal
-from PySide6.QtGui import QColor, QPixmap, QFont, QMouseEvent
+from PySide6.QtGui import QColor, QIcon, QPixmap, QFont, QMouseEvent
 from loguru import logger
 import requests
 
@@ -208,7 +208,7 @@ class TodoItem(QFrame):
                 img_lbl.setPixmap(scaled_pixmap)
                 layout.addWidget(img_lbl)
         except Exception as e:
-            logger.exception(f"Failed to load image: {e}")
+            logger.error(f"Failed to load image: {e}")
 
     def _toggle_status(self) -> None:
         """
@@ -238,7 +238,7 @@ class TodoItem(QFrame):
             try:
                 requests.delete(f"{API_URL}/todos/{self.todo_id}", proxies=NO_PROXY)
             except Exception as e:
-                logger.exception(f"Failed to delete todo: {e}")
+                logger.error(f"Failed to delete todo: {e}")
 
         self.deleteLater()
 
@@ -250,6 +250,7 @@ class TodoApp(QWidget):
     def __init__(self) -> None:
         super().__init__()
         self.setObjectName("MainWindow")
+        self.setWindowIcon(QIcon("logo.ico")) 
         
         # 窗口属性设置
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
@@ -320,13 +321,14 @@ class TodoApp(QWidget):
         """
         self.input_frame = QFrame()
         self.input_frame.setObjectName("InputArea")
+        self.input_frame.setFixedHeight(150) 
 
         self.input_layout = QVBoxLayout(self.input_frame)
 
         # 文本输入框
         self.text_input = QTextEdit()
         self.text_input.setPlaceholderText("添加待办事项……")
-        self.text_input.setFixedHeight(60)
+        self.text_input.setFixedHeight(40)
 
         # 按钮行，包含添加按钮、添加照片按钮
         btn_layout = QHBoxLayout()
@@ -352,7 +354,7 @@ class TodoApp(QWidget):
         self.input_layout.addWidget(self.text_input)
         self.input_layout.addLayout(btn_layout)
 
-        self.main_layout.addWidget(self.input_frame)
+        # self.main_layout.addWidget(self.input_frame)
         
         self.selected_image_path = None
 
@@ -429,7 +431,7 @@ class TodoApp(QWidget):
             
             self.refresh_todos()
         except requests.RequestException as e:
-            logger.exception(f"Network error:{e}")
+            logger.error(f"Network error:{e}")
      
     def refresh_todos(self) -> None:
         """
@@ -463,7 +465,7 @@ class TodoApp(QWidget):
                     item_widget = TodoItem(todo)
                     self.scroll_layout.addWidget(item_widget)
         except requests.RequestException as e:
-            logger.exception(f"Fetch error: {e}")
+            logger.error(f"Fetch error: {e}")
     
 
 if __name__ == "__main__":
@@ -479,6 +481,10 @@ if __name__ == "__main__":
 
     server_exe_path = os.path.join(base_dir, "TodoServer.exe")
 
+    if not os.path.exists(server_exe_path):
+        parent_dir = os.path.dirname(base_dir)
+        server_exe_path = os.path.join(parent_dir, "TodoServer.exe")
+
     if os.path.exists(server_exe_path):
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -488,7 +494,7 @@ if __name__ == "__main__":
         time.sleep(1)
     else:
         print("未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动。")
-        logger.exception("Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动")
+        logger.error("Found Process error：未找到服务端程序 TodoServer.exe，将以无后端模式尝试启动")
 
     def cleanup() -> None:
         """
